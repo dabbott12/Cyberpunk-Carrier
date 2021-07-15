@@ -28,16 +28,16 @@ export default class App extends Component {
     let world = engine.world;
 
     let bird = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2, 50, 50);
-    let floor = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT - 25, Constants.MAX_WIDTH, 50, { isStatic: true });
-    let ceiling = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, 25, Constants.MAX_WIDTH, 50, { isStatic: true });
+    let floor = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH, 50, { isStatic: true });
+    let ceiling = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT -620, Constants.MAX_WIDTH, 50, { isStatic: true });
 
     Matter.World.add(world, [bird, floor, ceiling]);
 
     return {
       physics: { engine: engine, world: world },
-      bird: { body: bird, size: [50, 50], color: 'red', renderer: Bird },
+      bird: { body: bird, size: [80, 30], color: 'red', renderer: Bird },
       floor: { body: floor, size: [Constants.MAX_WIDTH, 50], color: 'green', renderer: Wall },
-      ceiling: { body: ceiling, size: [], color: 'blue', renderer: Wall },
+      ceiling: { body: ceiling, size: [Constants.MAX_WIDTH, 50], color: 'blue', renderer: Wall },
     }
   }
 
