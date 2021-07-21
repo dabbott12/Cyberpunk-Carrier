@@ -4,10 +4,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Component } from 'react/cjs/react.production.min';
 import { GameEngine } from 'react-native-game-engine';
+import { TouchableOpacity, Image } from 'react-native';
 import Matter from 'matter-js';
 import Bird from './Bird';
 import Wall from './Wall';
-import Physics from './Physics'
+import Floor from './Floor';
+import Physics from './Physics';
+import Images from './assets/Images';
 
 
 var Constants = {
@@ -40,47 +43,77 @@ export default class App extends Component {
     super(props);
     this.gameEngine = null;
     this.entities = this.setupWorld();
+
+    this.state = {
+      running: true
+    }
   }
 
   setupWorld = () => {
     let engine = Matter.Engine.create({ enableSleeping: false });
     let world = engine.world;
+    world.gravity.y = 1;
 
     let bird = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2, 40, 40);
-    let floor = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH, 50, { isStatic: true });
-    let ceiling = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT -620, Constants.MAX_WIDTH, 50, { isStatic: true });
+    let floor1 = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH + 4, 50, { isStatic: true });
+    let floor2 = Matter.Bodies.rectangle(Constants.MAX_WIDTH + (Constants.MAX_WIDTH / 2), Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH, 50, { isStatic: true });
+ 
 
-    let [pipe1Height, pipe2Height] = generatePipes();
-    let pipe1 = Matter.Bodies.rectangle(Constants.MAX_WIDTH - (Constants.PIPE_WIDTH / 2), pipe1Height / 20, Constants.PIPE_WIDTH, pipe1Height, { isStatic: true });
-    let pipe2 = Matter.Bodies.rectangle(Constants.MAX_WIDTH - (Constants.PIPE_WIDTH / 2), Constants.MAX_HEIGHT - (pipe2Height + 25), Constants.PIPE_WIDTH, pipe2Height, { isStatic: true });
+ 
+    Matter.World.add(world, [bird, floor1, floor2]);
 
-    let [pipe3Height, pipe4Height] = generatePipes();
-    let pipe3 = Matter.Bodies.rectangle(Constants.MAX_WIDTH * 2 - (Constants.PIPE_WIDTH / 2), pipe3Height / 20, Constants.PIPE_WIDTH, pipe3Height, { isStatic: true });
-    let pipe4 = Matter.Bodies.rectangle(Constants.MAX_WIDTH * 2 - (Constants.PIPE_WIDTH / 2), Constants.MAX_HEIGHT - (pipe4Height + 25), Constants.PIPE_WIDTH, pipe4Height, { isStatic: true });
-    
-    Matter.World.add(world, [bird, floor, ceiling, pipe1, pipe2, pipe3, pipe4]);
+    Matter.Events.on(engine, "collisionStart", (event) => {
+        let pairs = event.pairs;
+
+        this.gameEngine.dispatch({ type: "game-over" });
+    });
 
 
     return {
       physics: { engine: engine, world: world },
       bird: { body: bird, size: [80, 30], color: 'red', renderer: Bird },
-      floor: { body: floor, size: [Constants.MAX_WIDTH, 50], color: 'green', renderer: Wall },
-      ceiling: { body: ceiling, size: [Constants.MAX_WIDTH, 50], color: 'blue', renderer: Wall },
-      pipe1: { body: pipe1, size: [Constants.PIPE_WIDTH, pipe1Height], color: 'green', renderer: Wall },
-      pipe2: { body: pipe2, size: [Constants.PIPE_WIDTH, pipe2Height], color: 'green', renderer: Wall },
-      pipe3: { body: pipe3, size: [Constants.PIPE_WIDTH, pipe3Height], color: 'green', renderer: Wall },
-      pipe4: { body: pipe4, size: [Constants.PIPE_WIDTH, pipe4Height], color: 'green', renderer: Wall },
+      floor1: { body: floor1, renderer: Floor },
+      floor2: { body: floor2, renderer: Floor },
+
+
     }
+  }
+
+  onEvent = (e) => {
+      if (e.type === "game-over")
+      {
+        this.setState({
+          running: false
+        })
+      }
+  }
+
+  reset = () => {
+      this.gameEngine.swap(this.setupWorld());
+      this.setState({
+        running: true
+      });
   }
 
   render() {
     return (
       <View style={ styles.container }>
+
         <GameEngine
           ref={ (ref) => { this.gameEngine = ref; } }
           style={ styles.gameContainer }
-          systems={[Physics]}
-          entities={ this.entities } />
+          systems={ [Physics] }
+          running={ this.state.running }
+          onEvent={ this.onEvent }
+          entities={ this.entities }>
+          <StatusBar hidden={ true } />
+        </GameEngine>
+        { !this.state.running && <TouchableOpacity onPress={ this.reset } style={ styles.fullScreenButton }>
+          <View style={ styles.fullScreen }>
+            <Text style={ styles.gameOverText }>Game Over</Text>
+          </View>
+        </TouchableOpacity>}
+
       </View>
     )
   }
@@ -92,5 +125,43 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff'
   },
-
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: Constants.MAX_WIDTH,
+    height: Constants.MAX_HEIGHT
+  },
+  gameContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
+  },
+  fullScreenButton: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flex: 1
+  },
+  fullScreen: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'black',
+    opacity: 0.8,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  gameOverText: {
+    color: 'white',
+    fontSize: 48
+  }
 });
