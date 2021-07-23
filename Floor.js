@@ -4,10 +4,10 @@ import Images from './assets/Images';
 
 export default class Floor extends Component {
     render() {
-        const width = this.props.body.bounds.max.x - this.props.body.bounds.min.x;
-        const height = this.props.body.bounds.max.y - this.props.body.bounds.min.x;
-        const x = this.props.body.position.x - width / 2;
-        const y = this.props.body.position.y - width + 130;
+        const width = 430;
+        const height = 50;
+        const x = this.props.body.position.x - 250;
+        const y = this.props.body.position.y - width + 225;
 
         const imageIteration = Math.ceil(width / height);
 
@@ -22,9 +22,9 @@ export default class Floor extends Component {
                     overflow: 'hidden',
                     flexDirection: 'row'
                 }}>
-                { Array.apply(null, Array(imageIteration)).map(( el, idx) => {
-                    return <Image style={{ width: height, height: height }} key={ idx } resizeMode="repeat" source={ Images.floor } />
-                }) }
+                    { Array.apply(null, Array(imageIteration)).map(( el, idx ) => {
+                        return <Image style={{ width: height, height: height }} key={ idx } resizeMode="stretch" source={ Images.floor } />
+                    }) }
             </View>
         )
     }

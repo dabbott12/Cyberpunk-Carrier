@@ -7,7 +7,7 @@ import { GameEngine } from 'react-native-game-engine';
 import { TouchableOpacity, Image } from 'react-native';
 import Matter from 'matter-js';
 import Bird from './Bird';
-import Wall from './Wall';
+import Pipe from './Pipe';
 import Floor from './Floor';
 import Physics from './Physics';
 import Images from './assets/Images';
@@ -16,27 +16,13 @@ import Images from './assets/Images';
 var Constants = {
   MAX_WIDTH: Dimensions.get("screen").width,
   MAX_HEIGHT: Dimensions.get("screen").height,
-  GAP_SIZE: 200,
-  PIPE_WIDTH: 100
+  GAP_SIZE: 250,
+  PIPE_WIDTH: 100,
+  BIRD_WIDTH: 50,
+  BIRD_HEIGHT: 41
 }
 
-export const randomBetween = (min, max) => {
-  return Math.floor(Math.random() * (max - min +1) + min);
-}
 
-export const generatePipes = () => {
-  let topPipeHeight = randomBetween(100, (Constants.MAX_HEIGHT / 2) - 100)
-  let bottomPipeHeight = Constants.MAX_HEIGHT - topPipeHeight - Constants.GAP_SIZE;
-
-  let sizes = [topPipeHeight, bottomPipeHeight];
-
-  if (Math.random() < 0.5)
-  {
-    sizes = sizes.reverse();
-  }
-
-  return sizes;
-}
 
 export default class App extends Component {
   constructor(props){
@@ -52,11 +38,11 @@ export default class App extends Component {
   setupWorld = () => {
     let engine = Matter.Engine.create({ enableSleeping: false });
     let world = engine.world;
-    world.gravity.y = 1;
+    world.gravity.y = 0;
 
-    let bird = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 4, Constants.MAX_HEIGHT / 2, 40, 40);
+    let bird = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT / 2, Constants.BIRD_WIDTH, Constants.BIRD_HEIGHT);
     let floor1 = Matter.Bodies.rectangle(Constants.MAX_WIDTH / 2, Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH + 4, 50, { isStatic: true });
-    let floor2 = Matter.Bodies.rectangle(Constants.MAX_WIDTH + (Constants.MAX_WIDTH / 2), Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH, 50, { isStatic: true });
+    let floor2 = Matter.Bodies.rectangle(Constants.MAX_WIDTH + (Constants.MAX_WIDTH / 2), Constants.MAX_HEIGHT + 85, Constants.MAX_WIDTH + 4, 50, { isStatic: true });
  
 
  
@@ -71,7 +57,7 @@ export default class App extends Component {
 
     return {
       physics: { engine: engine, world: world },
-      bird: { body: bird, size: [80, 30], color: 'red', renderer: Bird },
+      bird: { body: bird, pose: 1, renderer: Bird },
       floor1: { body: floor1, renderer: Floor },
       floor2: { body: floor2, renderer: Floor },
 
@@ -98,7 +84,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={ styles.container }>
-
+        <Image source={ Images.background } style={ styles.backgroundImage } resizeMode="stretch" />
         <GameEngine
           ref={ (ref) => { this.gameEngine = ref; } }
           style={ styles.gameContainer }
