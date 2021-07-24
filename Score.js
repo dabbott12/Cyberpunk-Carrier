@@ -1,42 +1,53 @@
 import * as React from 'react';
-import { Button, View, Text, SafeAreaView } from 'react-native';
+import { FlatList, Button, View, Text, SafeAreaView } from 'react-native';
+import * as SQLite from 'expo-sqlite';
 
-const Score = ({ navigation }) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1 , padding: 16}}>
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 25,
-              textAlign: 'center',
-              marginBottom: 16
-            }}>
-            INSERT HIGH SCORES HERE IN TABLE
-          </Text>
+const db = SQLite.openDatabase("UserDatabase.db");
 
-          <Text>{'\n'}</Text>
-          <Button
-            onPress={() => navigation.goBack()}
-            title="Back"
-          />
-        </View>
-        <Text style={{
-            fontSize: 18,
-            textAlign: 'center',
-            color: 'grey'
-          }}>
+export default class Score extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      FlatListItems: []
+    };
+    db.transaction(tx => {
+      tx.executeSql("SELECT * FROM table_user", [], (tx, results) => {
+        var temp = [];
+        for (let i = 0; i < results.rows.length; ++i) {
+          temp.push(results.rows.item(i));
+        }
+        this.setState({
+          FlatListItems: temp
+        });
+      });
+    });
+  }
+  ListViewItemSeparator = () => {
+    return (
+      <View
+        style={{ height: 0.2, width: "100%", backgroundColor: "#808080" }}
+      />
+    );
+  };
+  render() {
+    return (
+      <View>
+        <FlatList
+          data={this.state.FlatListItems}
+          ItemSeparatorComponent={this.ListViewItemSeparator}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View
+              key={item.user_id}
+              style={{ backgroundColor: "white", padding: 20 }}
+            >
 
-        </Text>
-
+              <Text>Date: {item.user_date}</Text>
+              <Text>Score: {item.user_score}</Text>
+            </View>
+          )}
+        />
       </View>
-    </SafeAreaView>
-  );
+    );
+  }
 }
-
-export default Score;

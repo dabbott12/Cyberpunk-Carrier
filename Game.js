@@ -12,6 +12,9 @@ import { NativeModules } from "react-native";
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as SQLite from 'expo-sqlite';
+
+const db = SQLite.openDatabase("UserDatabase.db");
 
 
 
@@ -57,6 +60,8 @@ const Wait = async () => {
 }
 
 
+
+
 export const generateRandom = () => {
         random = Math.floor((Math.random() * 8) + 1)
         return random;
@@ -67,15 +72,63 @@ export const generateRandom = () => {
 export default class Game extends Component {
     constructor(props){
         super(props);
+        db.transaction(function(txn) {
+            txn.executeSql(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name='table_user'",
+                [],
+            function(tx, res) {
+                
+                if (res.rows.length == 0) {
+                    txn.executeSql("DROP TABLE IF EXISTS table_user", []);
+                    txn.executeSql(
+                        "CREATE TABLE IF NOT EXISTS table_user(user_id INTEGER PRIMARY KEY AUTOINCREMENT, user_date DATE, user_score INT(10))",
+                        []
+                    );
+                }
+            }
+      );
+    });
 
         this.state = {
             running: true,
             score: 0,
-            gameOver: false
+            gameOver: false,
+            FlatListItems: []
         };
         this.gameEngine = null;
         this.entities = this.setupWorld(); 
     }
+
+    register_score = () => {
+
+    const user_date  = new Date().toISOString().substring(0, 10);
+    const user_score  = this.state.score;
+
+          db.transaction(function(tx) {
+            tx.executeSql(
+              "INSERT INTO table_user (user_date, user_score) VALUES (?,?)",
+              [user_date, user_score],
+              (tx, results) => {
+                console.log("Results", results.rowsAffected);
+
+              }
+            );
+          });
+  };
+
+  view_score = () => {
+    db.transaction(tx => {
+      tx.executeSql("SELECT * FROM table_user", [], (tx, results) => {
+        var temp = [];
+        for (let i = 0; i < results.rows.length; ++i) {
+          temp.push(results.rows.item(i));
+        }
+        this.setState({
+          FlatListItems: temp
+        });
+      });
+    });
+  };
 
 
 
@@ -171,6 +224,7 @@ export default class Game extends Component {
                 gameOver: true
             });
             this.gameOver();
+            this.register_score();
         }
 
         else
@@ -432,13 +486,14 @@ const styles = StyleSheet.create({
       button: {
         alignItems: 'center',
         backgroundColor: '#DDDDDD',
+        borderRadius: 100,
         top: 375,
         right: 100,
         left: 0,
         bottom: 0,
         padding: 10,
         height: 85,
-        width: Constants.MAX_WIDTH,
+        width: Constants.MAX_WIDTH - 10,
         opacity: 1,
         marginTop: 16,
     },
@@ -446,13 +501,14 @@ const styles = StyleSheet.create({
       button2: {
         alignItems: 'center',
         backgroundColor: '#DDDDDD',
+        borderRadius: 100,
         top: 0,
         right: 0,
         left: 0,
         bottom: 0,
         padding: 10,
         height: 85,
-        width: Constants.MAX_WIDTH,
+        width: Constants.MAX_WIDTH - 10,
         opacity: 1,
         marginTop: 16,
     },
