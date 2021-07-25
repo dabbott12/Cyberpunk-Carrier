@@ -1,6 +1,9 @@
 import Matter from "matter-js";
 import Pipe from './Pipe';
 import PipeTop from './PipeTop';
+import { Audio } from 'expo-av';
+import React, { Component, useRef, useEffect } from 'react';
+
 
 let tick = 0;
 let pose = 1;
@@ -94,6 +97,11 @@ export const addPipesAtLocation = (x, world, entities) => {
 
 
 const Physics = (entities, { touches, time, dispatch }) => {
+    
+
+
+
+
     let engine = entities.physics.engine;
     let world = entities.physics.world;
     let bird = entities.bird.body;
@@ -107,6 +115,9 @@ const Physics = (entities, { touches, time, dispatch }) => {
                 addPipesAtLocation((Constants.MAX_WIDTH * 2) - (Constants.PIPE_WIDTH / 2), world, entities);
                 addPipesAtLocation((Constants.MAX_WIDTH * 3) - (Constants.PIPE_WIDTH / 2), world, entities);
             }
+
+
+
 
             hadTouches = true;
             Matter.Body.setVelocity( bird, {

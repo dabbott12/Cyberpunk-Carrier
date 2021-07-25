@@ -25,6 +25,7 @@ export default class BirdBlue extends Component {
         let image = Images['birdBlue' + this.props.pose];
 
         return (
+            <View style={{ flex: 1 }}>
             <Animated.Image
                 style={{
                     position: "absolute",
@@ -34,8 +35,8 @@ export default class BirdBlue extends Component {
                     height: height,
                     transform: [{ rotate: rotation }]
                 }}
-                resizeMode="stretch"
-                source={image} />
+                source={ image } />
+                </View>
     );
   }
 }

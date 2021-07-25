@@ -25,6 +25,7 @@ export default class Bird extends Component {
         let image = Images['bird' + this.props.pose];
 
         return (
+            <View style={{ flex: 1 }}>
             <Animated.Image
                 style={{
                     position: "absolute",
@@ -32,10 +33,10 @@ export default class Bird extends Component {
                     top: y,
                     width: width,
                     height: height,
-                    transform: [{ rotate: rotation }]
+                    transform: [{ rotate: rotation }]                  
                 }}
-                resizeMode="stretch"
-                source={image} />
+                source={ image } />
+                </View>
     );
   }
 }

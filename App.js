@@ -13,9 +13,11 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+
 import TitleScreen from './TitleScreen';
 import Game from './Game';
 import Score from './Score';
+
 
 const Stack = createStackNavigator();
 

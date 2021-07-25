@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useRef, useEffect } from 'react';
 import { Dimensions, StyleSheet, Text, View, StatusBar, Alert, TouchableOpacity, Image, Button, TouchableHighlight } from 'react-native';
 import Matter from "matter-js";
 import { GameEngine } from "react-native-game-engine";
@@ -13,6 +13,9 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as SQLite from 'expo-sqlite';
+
+
+
 
 const db = SQLite.openDatabase("UserDatabase.db");
 
@@ -98,6 +101,8 @@ export default class Game extends Component {
         this.gameEngine = null;
         this.entities = this.setupWorld(); 
     }
+
+    
 
     register_score = () => {
 
@@ -327,6 +332,8 @@ export default class Game extends Component {
             this.setState({
                 running: false
             });
+
+
         }
     }
 
