@@ -17,7 +17,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import TitleScreen from './TitleScreen';
 import Game from './Game';
 import Score from './Score';
-
+import Sounds from './Sounds';
 
 const Stack = createStackNavigator();
 

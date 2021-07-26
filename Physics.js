@@ -3,12 +3,15 @@ import Pipe from './Pipe';
 import PipeTop from './PipeTop';
 import { Audio } from 'expo-av';
 import React, { Component, useRef, useEffect } from 'react';
-
+import Sounds from './Sounds';
 
 let tick = 0;
 let pose = 1;
 let pipes = 0;
 let counter = 0;
+
+const sound = new Sounds();
+
 
 export const randomBetween = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
@@ -34,6 +37,8 @@ export const generatePipes = () => {
 
 export const addPipesAtLocation = (x, world, entities) => {
     let [pipe1Height, pipe2Height] = generatePipes();
+
+
 
     let pipeTopWidth = Constants.PIPE_WIDTH + 20;
     let pipeTopHeight = (pipeTopWidth / 205) * 95;
@@ -108,6 +113,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
 
     let hadTouches = false;
     touches.filter(t => t.type === "press").forEach(t => {
+        sound.flapComponentDidMount();
         if (!hadTouches){
             if (world.gravity.y === 0.0){
                 world.gravity.y = 1.2;
@@ -120,6 +126,8 @@ const Physics = (entities, { touches, time, dispatch }) => {
 
 
             hadTouches = true;
+
+            
             Matter.Body.setVelocity( bird, {
                 x: bird.velocity.x,
                 y: -10
@@ -172,5 +180,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
 
     return entities;
 };
+
+
 
 export default Physics;

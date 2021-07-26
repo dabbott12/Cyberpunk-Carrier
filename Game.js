@@ -13,6 +13,8 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as SQLite from 'expo-sqlite';
+import { Audio } from 'expo-av';
+import Sounds from './Sounds';
 
 
 
@@ -102,7 +104,7 @@ export default class Game extends Component {
         this.entities = this.setupWorld(); 
     }
 
-    
+
 
     register_score = () => {
 

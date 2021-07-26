@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { FlatList, Button, View, Text, SafeAreaView } from 'react-native';
 import * as SQLite from 'expo-sqlite';
+import Sounds from './Sounds';
 
 const db = SQLite.openDatabase("UserDatabase.db");
 

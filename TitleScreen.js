@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, View, Text, SafeAreaView } from 'react-native';
+import Sounds from './Sounds';
 
 const TitleScreen = ({ navigation }) => {
   return (
