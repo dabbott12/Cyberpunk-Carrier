@@ -10,5 +10,6 @@ export default Images = {
     birdBlue2: require('./img/birdBlue2.png'),
     birdBlue3: require('./img/birdBlue3.png'),
     boardBlank: require('./img/boardBlank.png'),
-    logo: require('./img/logo.jpeg')
+    logo: require('./img/logo.jpeg'),
+    play: require('./img/play.jpeg')
 }

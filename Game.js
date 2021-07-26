@@ -17,11 +17,11 @@ import { Audio } from 'expo-av';
 import Sounds from './Sounds';
 
 
-
+const gap = new Sounds();
+const cheer = new Sounds();
+const wrong = new Sounds();
 
 const db = SQLite.openDatabase("UserDatabase.db");
-
-
 
 const questions = ['2 + 2 = ?',
                  '6 - 0 = ?',
@@ -64,15 +64,10 @@ const Wait = async () => {
     NativeModules.DevSettings.reload();
 }
 
-
-
-
 export const generateRandom = () => {
         random = Math.floor((Math.random() * 8) + 1)
         return random;
     };
-
-
 
 export default class Game extends Component {
     constructor(props){
@@ -104,8 +99,6 @@ export default class Game extends Component {
         this.entities = this.setupWorld(); 
     }
 
-
-
     register_score = () => {
 
     const user_date  = new Date().toISOString().substring(0, 10);
@@ -136,8 +129,6 @@ export default class Game extends Component {
       });
     });
   };
-
-
 
     setupWorld = () => {
         let engine = Matter.Engine.create({ enableSleeping: false });
@@ -274,8 +265,6 @@ export default class Game extends Component {
                     running: true
                 });                
             }
-
-
         }
 
         else
@@ -287,8 +276,6 @@ export default class Game extends Component {
     }
 
     gameOver = () => {
-
-        // write score to database
 
              this.setState({
                 gameOver: true,
@@ -303,6 +290,7 @@ export default class Game extends Component {
                 gameOver: true
             });
         } else if (e.type === "score") {
+            gap.gapComponentDidMount();
             this.setState({
                 score: this.state.score + 1
             })
@@ -316,6 +304,7 @@ export default class Game extends Component {
     resetA = () => {
         if (mcObj[counter].a === answers[counter])
         {
+            cheer.cheerComponentDidMount();
             counter ++;
             correctAnswers ++;
             this.checkCounter();
@@ -325,6 +314,7 @@ export default class Game extends Component {
 
         else
         {
+            wrong.wrongComponentDidMount();
             counter ++;
             wrongAnswers ++;
             this.checkCounter();
@@ -342,6 +332,7 @@ export default class Game extends Component {
     resetB = () => {
         if (mcObj[counter].b === answers[counter])
         {
+            cheer.cheerComponentDidMount();
             counter ++;
             correctAnswers ++;
             this.checkCounter();
@@ -352,6 +343,7 @@ export default class Game extends Component {
 
         else
         {
+            wrong.wrongComponentDidMount();
             counter ++;
             wrongAnswers ++;
             this.checkCounter();
@@ -367,6 +359,7 @@ export default class Game extends Component {
     resetC = () => {
         if (mcObj[counter].c === answers[counter])
         {
+            cheer.cheerComponentDidMount();
             counter ++;
             correctAnswers ++;
             this.checkCounter();
@@ -376,6 +369,7 @@ export default class Game extends Component {
 
         else
         {
+            wrong.wrongComponentDidMount();
             counter ++;
             wrongAnswers ++;
             this.checkCounter();

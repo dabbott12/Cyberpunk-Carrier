@@ -37,9 +37,6 @@ export const generatePipes = () => {
 
 export const addPipesAtLocation = (x, world, entities) => {
     let [pipe1Height, pipe2Height] = generatePipes();
-
-
-
     let pipeTopWidth = Constants.PIPE_WIDTH + 20;
     let pipeTopHeight = (pipeTopWidth / 205) * 95;
 
@@ -100,13 +97,7 @@ export const addPipesAtLocation = (x, world, entities) => {
     pipes += 2;
 }
 
-
 const Physics = (entities, { touches, time, dispatch }) => {
-    
-
-
-
-
     let engine = entities.physics.engine;
     let world = entities.physics.world;
     let bird = entities.bird.body;
@@ -122,18 +113,13 @@ const Physics = (entities, { touches, time, dispatch }) => {
                 addPipesAtLocation((Constants.MAX_WIDTH * 3) - (Constants.PIPE_WIDTH / 2), world, entities);
             }
 
-
-
-
             hadTouches = true;
 
-            
             Matter.Body.setVelocity( bird, {
                 x: bird.velocity.x,
                 y: -10
             });
         }
-
     });
 
     Matter.Engine.update(engine, time.delta);
@@ -177,10 +163,7 @@ const Physics = (entities, { touches, time, dispatch }) => {
         entities.bird.pose = pose;
     }
 
-
     return entities;
 };
-
-
 
 export default Physics;
