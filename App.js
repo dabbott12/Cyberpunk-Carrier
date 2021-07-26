@@ -29,6 +29,7 @@ function App() {
           name="TitleScreen"
           component={TitleScreen}
           options={{
+            headerShown: false,
             title: "Flappy Bird's Math", //Set Header Title
             headerStyle: {
               backgroundColor: '#f4511e', //Set Header color
@@ -58,6 +59,7 @@ function App() {
           name="Score"
           component={Score}
           options={{
+            headerShown: false,
             title: "High Scores", //Set Header Title
             headerStyle: {
               backgroundColor: '#f4511e', //Set Header color
