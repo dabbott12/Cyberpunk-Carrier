@@ -5,7 +5,7 @@ export default class Sounds extends Component {
  render() {
    return (
      
-	this.flap.playAsync()
+	this.flap.unloadAsync()
      
    );
  }
@@ -18,6 +18,10 @@ export default class Sounds extends Component {
     );
     await this.flap.setIsLoopingAsync(false);
     await this.flap.playAsync();
+    this.cheer.unloadAsync();
+    this.wrong.unloadAsync();
+    this.gap.unloadAsync();
+    this.crash.unloadAsync();
     // Your sound is playing!
   } catch (error) {
     // An error occurred!
@@ -32,6 +36,10 @@ export default class Sounds extends Component {
     );
     await this.cheer.setIsLoopingAsync(false);
     await this.cheer.playAsync();
+    this.flap.unloadAsync();
+    this.wrong.unloadAsync();
+    this.gap.unloadAsync();
+    this.crash.unloadAsync();
     // Your sound is playing!
   } catch (error) {
     // An error occurred!
@@ -46,6 +54,11 @@ export default class Sounds extends Component {
     );
     await this.confirm.setIsLoopingAsync(false);
     await this.confirm.playAsync();
+    this.flap.unloadAsync();
+    this.cheer.unloadAsync();
+    this.wrong.unloadAsync();
+    this.gap.unloadAsync();
+    this.crash.unloadAsync();
     // Your sound is playing!
   } catch (error) {
     // An error occurred!
@@ -60,6 +73,10 @@ export default class Sounds extends Component {
     );
     await this.wrong.setIsLoopingAsync(false);
     await this.wrong.playAsync();
+    this.flap.unloadAsync();
+    this.cheer.unloadAsync();
+    this.gap.unloadAsync();
+    this.crash.unloadAsync();
     // Your sound is playing!
   } catch (error) {
     // An error occurred!
@@ -74,6 +91,10 @@ export default class Sounds extends Component {
     );
     await this.gap.setIsLoopingAsync(false);
     await this.gap.playAsync();
+    this.flap.unloadAsync();
+    this.cheer.unloadAsync();
+    this.wrong.unloadAsync();
+    this.crash.unloadAsync();
     // Your sound is playing!
   } catch (error) {
     // An error occurred!
@@ -88,6 +109,29 @@ export default class Sounds extends Component {
     );
     await this.bg.setIsLoopingAsync(true);
     await this.bg.playAsync();
+    this.flap.unloadAsync();
+    this.cheer.unloadAsync();
+    this.wrong.unloadAsync();
+    this.gap.unloadAsync();
+    this.crash.unloadAsync();
+    // Your sound is playing!
+  } catch (error) {
+    // An error occurred!
+  
+}}
+
+ async crashComponentDidMount() {
+  this.crash = new Audio.Sound();
+  try {
+    await this.crash.loadAsync(
+      require("./assets/sounds/collision.wav")
+    );
+    await this.crash.setIsLoopingAsync(false);
+    await this.crash.playAsync();
+    this.flap.unloadAsync();
+    this.cheer.unloadAsync();
+    this.wrong.unloadAsync();
+    this.gap.unloadAsync();
     // Your sound is playing!
   } catch (error) {
     // An error occurred!

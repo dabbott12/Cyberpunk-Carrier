@@ -20,6 +20,7 @@ import Sounds from './Sounds';
 const gap = new Sounds();
 const cheer = new Sounds();
 const wrong = new Sounds();
+const crash = new Sounds();
 
 const db = SQLite.openDatabase("UserDatabase.db");
 
@@ -295,6 +296,7 @@ export default class Game extends Component {
                 score: this.state.score + 1
             })
         } else if (e.type === "math") {
+            crash.crashComponentDidMount();
             this.setState({
                 running: false
             })
@@ -418,7 +420,6 @@ export default class Game extends Component {
                     </View>
                 </TouchableOpacity>}
                 {!this.state.running && !this.state.gameOver && <TouchableOpacity style={styles.button} underlayColor="#193441" onPress={this.resetA}>
-
                 
                     <Text style={ styles.questionText }>{ mcObj[counter].a }</Text>
                     <View style={styles.fullScreenB}>
