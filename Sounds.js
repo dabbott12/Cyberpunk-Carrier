@@ -95,7 +95,3 @@ export default class Sounds extends Component {
 }}
 
 }
-
-
-
-    

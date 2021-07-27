@@ -10,7 +10,7 @@ const TitleScreen = ({ navigation }) => {
   sound.bgComponentDidMount();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#dc1a22" }}>
-            <Image style={{ height: 200, width: '100%', top: 150 }} source={ Images.logo }>
+            <Image style={{ height: 200, width: '100%', top: 100 }} source={ Images.logo }>
             </Image>
       <View style={{ flex: 1 , padding: 16}}>
         <View
@@ -18,6 +18,8 @@ const TitleScreen = ({ navigation }) => {
             flex: 1,
             alignItems: 'center',
             justifyContent: 'center',
+            top: -25,
+            marginTop: 50
           }}>
           <Text
             style={{
@@ -27,16 +29,15 @@ const TitleScreen = ({ navigation }) => {
             }}>
 
           </Text>
-
+          <View style={{ flex: 1 , padding: 16}}>
           <TouchableNativeFeedback onPress={() => navigation.navigate('Game')} >
-            <Image style={{ flex: 1, height: 150, width: 150, resizeMode:'contain' }} source={ Images.play }/>     
+            <Image style={{ height: 150, width: 150, resizeMode:'contain' }} source={ Images.play }/>     
           </TouchableNativeFeedback>
-
+          </View>
           <Text>{'\n'}</Text>
-          <Button
-            onPress={() => navigation.navigate('Score')}
-            title="High Scores"
-          />
+          <TouchableNativeFeedback onPress={() => navigation.navigate('Score')} >
+            <Image style={{ height: 150, width: 150, resizeMode:'contain' }} source={ Images.highScores }/>     
+          </TouchableNativeFeedback>
         </View>
         <Text style={{
             fontSize: 18,
