@@ -326,8 +326,6 @@ export default class Game extends Component {
             this.setState({
                 running: false
             });
-
-
         }
     }
 

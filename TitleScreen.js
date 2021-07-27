@@ -52,7 +52,6 @@ const TitleScreen = ({ navigation }) => {
           {'\n'}
           Gavin Sidhu
         </Text>
-
       </View>
     </SafeAreaView>
   );
